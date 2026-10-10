@@ -150,6 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <thead>
                     <tr>
                         <th>Airline</th>
+                        <th>Flight #</th>
                         <th>Schedule</th>
                         <th>Duration</th>
                         <th>Stops</th>
@@ -167,15 +168,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const stopsStr = flight.stops === 0 ? 'Non-stop' : flight.stops + ' Stop(s)';
             const priceStr = flight.price ? formatPrice(flight.price) : 'N/A';
             const equipStr = flight.equipment || 'N/A';
+            const flightNumStr = flight.flight_number || 'N/A';
 
             html += `
                 <tr style="animation-delay: ${index * 0.02}s">
-                    <td class="fw-600">${flight.airlines.join(', ')}</td>
-                    <td>${flight.departure_time} &mdash; ${flight.arrival_time}</td>
-                    <td class="text-sec">${durationStr}</td>
-                    <td class="text-sec">${stopsStr}</td>
-                    <td class="text-sec">${equipStr}</td>
-                    <td class="text-right price-cell">${priceStr}</td>
+                    <td data-label="Airline" class="fw-600">${flight.airlines.join(', ')}</td>
+                    <td data-label="Flight #" class="text-sec">${flightNumStr}</td>
+                    <td data-label="Schedule">${flight.departure_time} &mdash; ${flight.arrival_time}</td>
+                    <td data-label="Duration" class="text-sec">${durationStr}</td>
+                    <td data-label="Stops" class="text-sec">${stopsStr}</td>
+                    <td data-label="Equipment" class="text-sec">${equipStr}</td>
+                    <td data-label="Price" class="text-right price-cell">${priceStr}</td>
                 </tr>
             `;
         });
