@@ -101,6 +101,9 @@ def parse_js(js: str):
 
             duration = single_flight[11]
 
+            flight_info = single_flight[22] if len(single_flight) > 22 and single_flight[22] else ["", ""]
+            flight_number = f"{flight_info[0]} {flight_info[1]}" if len(flight_info) > 1 else ""
+
             sg_flights.append(
                 SingleFlight(
                     from_airport=from_airport,
@@ -109,6 +112,7 @@ def parse_js(js: str):
                     arrival=arrival,
                     duration=duration,
                     plane_type=plane_type,
+                    flight_number=flight_number,
                 )
             )
 
