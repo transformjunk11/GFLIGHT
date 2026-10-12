@@ -196,17 +196,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    function getAirlineIcon(name) {
-        const lower = (name || '').toLowerCase();
-        if (lower.includes('indigo')) return '🔵';
-        if (lower.includes('air india')) return '🔴';
-        if (lower.includes('spicejet')) return '🟠';
-        if (lower.includes('vistara')) return '🟣';
-        if (lower.includes('emirates')) return '🇦🇪';
-        if (lower.includes('qatar')) return '🇶🇦';
-        return '✈️';
-    }
-
     function renderResults(flights) {
         if (!flights || flights.length === 0) {
             resultsContainer.innerHTML = `
@@ -230,15 +219,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const durationStr = `${durationHours}h ${durationMins}m`;
             const priceStr = formatPrice(flight.price);
             const isBestDeal = flight.price && flight.price === cheapestPrice;
-            const primaryAirline = (flight.airlines && flight.airlines[0]) || 'Airline';
-            const icon = getAirlineIcon(primaryAirline);
             const nextDayBadge = flight.next_day ? '<span style="color:#ef4444; font-size:0.65rem; font-weight:700;">+1d</span>' : '';
 
             html += `
                 <div class="compact-ticket">
                     <!-- Airline Info -->
                     <div class="ticket-airline">
-                        <div class="airline-badge">${icon}</div>
                         <div class="airline-info">
                             <span class="airline-name-text">${flight.airlines.join(', ')}</span>
                             <span class="flight-number-text">${flight.flight_number || 'Non-stop'} · ${flight.equipment || 'Jet'}</span>
