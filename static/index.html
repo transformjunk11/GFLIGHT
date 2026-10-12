@@ -2,204 +2,124 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SkySearch — Modern Real-Time Flight Search</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SkySearch — Real-Time Flight Search</title>
     <meta name="description" content="Search, filter, and compare real-time Google Flight schedules and prices with SkySearch.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/style.css?v=4">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css?v=6">
 </head>
 <body>
-    <div class="glow-bg"></div>
-
-    <header class="navbar">
+    <header class="compact-header">
         <div class="nav-content">
             <div class="logo">
-                <div class="logo-icon">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.3c.4-.2.6-.6.5-1.1z"/>
-                    </svg>
-                </div>
-                <div class="brand-info">
-                    <span class="brand-title">SkySearch</span>
-                    <span class="brand-badge">PRO</span>
-                </div>
+                <span class="logo-icon">✈</span>
+                <span class="brand-title">SkySearch</span>
             </div>
-            <div class="nav-actions">
-                <span class="currency-tag">
-                    <span class="currency-dot"></span> INR (₹)
-                </span>
+            <div class="header-right">
+                <span class="currency-badge">INR (₹)</span>
             </div>
         </div>
     </header>
 
     <main class="main-container">
-        <!-- Hero Section -->
-        <section class="hero-section">
-            <div class="hero-badge">Real-Time Google Flights Data</div>
-            <h1 class="hero-title">Discover your next destination</h1>
-            <p class="hero-subtitle">Fast, transparent flight search with non-stop tracking and fare insights.</p>
-
-            <!-- Search Console Form -->
-            <form id="search-form" class="search-card">
-                <div class="search-grid">
-                    <div class="input-block">
-                        <label for="from_airport">
-                            <span class="label-icon">🛫</span> Origin
-                        </label>
-                        <div class="input-wrap">
-                            <input type="text" id="from_airport" placeholder="e.g. BOM" maxlength="4" value="BOM" required autocomplete="off" spellcheck="false">
-                            <span class="input-hint">Airport code</span>
-                        </div>
+        <!-- Compact Search Form Bar -->
+        <section class="search-section">
+            <form id="search-form" class="compact-search-card">
+                <div class="route-input-row">
+                    <div class="airport-input-box">
+                        <label for="from_airport">FROM</label>
+                        <input type="text" id="from_airport" placeholder="BOM" maxlength="4" value="BOM" required autocomplete="off" spellcheck="false">
                     </div>
 
-                    <div class="swap-btn-wrap">
-                        <button type="button" id="swap-airports" class="swap-btn" title="Swap origin and destination" aria-label="Swap origin and destination">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="m7 16-4-4 4-4"/>
-                                <path d="M3 12h18"/>
-                                <path d="m17 8 4 4-4 4"/>
-                            </svg>
-                        </button>
+                    <button type="button" id="swap-airports" class="compact-swap-btn" title="Swap airports" aria-label="Swap origin and destination">⇄</button>
+
+                    <div class="airport-input-box">
+                        <label for="to_airport">TO</label>
+                        <input type="text" id="to_airport" placeholder="DEL" maxlength="4" value="DEL" required autocomplete="off" spellcheck="false">
                     </div>
 
-                    <div class="input-block">
-                        <label for="to_airport">
-                            <span class="label-icon">🛬</span> Destination
-                        </label>
-                        <div class="input-wrap">
-                            <input type="text" id="to_airport" placeholder="e.g. DEL" maxlength="4" value="DEL" required autocomplete="off" spellcheck="false">
-                            <span class="input-hint">Airport code</span>
-                        </div>
+                    <div class="detail-input-box date-box">
+                        <label for="date">DEPART</label>
+                        <input type="date" id="date" required>
                     </div>
 
-                    <div class="input-block">
-                        <label for="date">
-                            <span class="label-icon">📅</span> Date
-                        </label>
-                        <div class="input-wrap">
-                            <input type="date" id="date" required>
-                        </div>
+                    <div class="detail-input-box mini-box">
+                        <label for="adults">PAX</label>
+                        <input type="number" id="adults" min="1" max="9" value="1" required>
                     </div>
 
-                    <div class="input-block small-block">
-                        <label for="adults">
-                            <span class="label-icon">👤</span> Passengers
-                        </label>
-                        <div class="input-wrap">
-                            <input type="number" id="adults" min="1" max="9" value="1" required>
-                        </div>
+                    <div class="detail-input-box class-box">
+                        <label for="seat">CLASS</label>
+                        <select id="seat">
+                            <option value="economy">Economy</option>
+                            <option value="business">Business</option>
+                            <option value="first">First</option>
+                        </select>
                     </div>
 
-                    <div class="input-block">
-                        <label for="seat">
-                            <span class="label-icon">💺</span> Cabin Class
-                        </label>
-                        <div class="input-wrap">
-                            <select id="seat">
-                                <option value="economy">Economy</option>
-                                <option value="business">Business</option>
-                                <option value="first">First Class</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="search-footer">
-                    <div class="quick-airports">
-                        <span class="quick-label">Popular routes:</span>
-                        <button type="button" class="chip" data-from="BOM" data-to="DEL">BOM → DEL</button>
-                        <button type="button" class="chip" data-from="BLR" data-to="DEL">BLR → DEL</button>
-                        <button type="button" class="chip" data-from="DEL" data-to="DXB">DEL → DXB</button>
-                        <button type="button" class="chip" data-from="BOM" data-to="GOI">BOM → GOI</button>
-                    </div>
-
-                    <button type="submit" id="search-btn" class="btn-search">
-                        <span class="btn-text">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;">
-                                <circle cx="11" cy="11" r="8"/>
-                                <path d="m21 21-4.3-4.3"/>
-                            </svg>
-                            Search Flights
-                        </span>
+                    <button type="submit" id="search-btn" class="compact-search-btn">
+                        <span class="btn-text">Search</span>
                         <div class="spinner hidden"></div>
                     </button>
+                </div>
+
+                <!-- Horizontal Quick Route Pills -->
+                <div class="chips-scroll">
+                    <span class="chips-label">Quick:</span>
+                    <button type="button" class="chip" data-from="BOM" data-to="DEL">BOM-DEL</button>
+                    <button type="button" class="chip" data-from="BLR" data-to="DEL">BLR-DEL</button>
+                    <button type="button" class="chip" data-from="DEL" data-to="DXB">DEL-DXB</button>
+                    <button type="button" class="chip" data-from="BOM" data-to="GOI">BOM-GOI</button>
+                    <button type="button" class="chip" data-from="CCU" data-to="DEL">CCU-DEL</button>
                 </div>
             </form>
         </section>
 
-        <!-- Dynamic Results Area -->
-        <section class="content-area">
-            <!-- Sidebar Filters -->
-            <aside id="filter-panel" class="sidebar hidden">
-                <div class="sidebar-header">
-                    <h3>Filter Results</h3>
-                    <button type="button" id="reset-filters" class="reset-btn">Reset</button>
-                </div>
-                
-                <div class="filter-group">
-                    <label for="sort-by">Sort Flights By</label>
-                    <select id="sort-by" class="custom-select">
-                        <option value="price_asc">Price: Lowest First</option>
-                        <option value="price_desc">Price: Highest First</option>
-                        <option value="duration_asc">Duration: Shortest First</option>
-                        <option value="duration_desc">Duration: Longest First</option>
-                        <option value="departure_asc">Departure: Earliest First</option>
-                        <option value="departure_desc">Departure: Latest First</option>
+        <!-- Compact Horizontal Filter Toolbar (Shows after search) -->
+        <section id="filter-bar" class="compact-filter-bar hidden">
+            <div class="filter-controls-row">
+                <div class="filter-item">
+                    <label for="sort-by">Sort</label>
+                    <select id="sort-by" class="mini-select">
+                        <option value="price_asc">Price: Low to High</option>
+                        <option value="price_desc">Price: High to Low</option>
+                        <option value="duration_asc">Duration: Shortest</option>
+                        <option value="departure_asc">Departure: Earliest</option>
                     </select>
                 </div>
 
-                <div class="filter-group">
-                    <label>
-                        Max Price
-                        <span id="price-val" class="val-badge">Any</span>
-                    </label>
-                    <div class="range-wrap">
-                        <input type="range" id="max-price" min="0" max="50000" step="500" value="50000">
-                    </div>
-                </div>
-
-                <div class="filter-group">
-                    <label>
-                        Max Duration
-                        <span id="duration-val" class="val-badge">Any</span>
-                    </label>
-                    <div class="range-wrap">
-                        <input type="range" id="max-duration" min="0" max="1440" step="30" value="1440">
-                    </div>
-                </div>
-
-                <div class="filter-group">
+                <div class="filter-item">
                     <label for="filter-airline">Airline</label>
-                    <select id="filter-airline" class="custom-select">
+                    <select id="filter-airline" class="mini-select">
                         <option value="any">All Airlines</option>
                     </select>
                 </div>
 
-                <div class="summary-stats" id="filter-stats">
-                    <div class="stat-item">
-                        <span class="stat-label">Total Found</span>
-                        <span class="stat-val" id="stat-total">0</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Best Price</span>
-                        <span class="stat-val highlight" id="stat-min-price">-</span>
-                    </div>
+                <div class="filter-item range-item">
+                    <label for="max-price">Max Price: <strong id="price-val">Any</strong></label>
+                    <input type="range" id="max-price" min="0" max="50000" step="500" value="50000">
                 </div>
-            </aside>
 
-            <!-- Results Listing Container -->
-            <div class="results-wrapper">
-                <div id="results-container" class="results-container hidden"></div>
+                <div class="filter-item range-item">
+                    <label for="max-duration">Max Duration: <strong id="duration-val">Any</strong></label>
+                    <input type="range" id="max-duration" min="0" max="1440" step="30" value="1440">
+                </div>
+
+                <div class="filter-actions">
+                    <button type="button" id="reset-filters" class="mini-reset-btn">Reset</button>
+                    <span class="badge-count" id="stat-total">0 flights</span>
+                </div>
             </div>
+        </section>
+
+        <!-- Results Listing -->
+        <section class="results-area">
+            <div id="results-container" class="results-container hidden"></div>
         </section>
     </main>
 
-    <footer class="app-footer">
-        <p>SkySearch · Fast Flights Search UI</p>
-    </footer>
-
-    <script src="/static/script.js?v=5"></script>
+    <script src="/static/script.js?v=7"></script>
 </body>
 </html>

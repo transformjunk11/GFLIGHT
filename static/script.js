@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnText = document.querySelector('.btn-text');
     const spinner = document.querySelector('.spinner');
     const resultsContainer = document.getElementById('results-container');
-    const filterPanel = document.getElementById('filter-panel');
+    const filterBar = document.getElementById('filter-bar');
     const maxPriceInput = document.getElementById('max-price');
     const maxDurationInput = document.getElementById('max-duration');
     const filterAirline = document.getElementById('filter-airline');
@@ -18,7 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const durationVal = document.getElementById('duration-val');
     const resetFiltersBtn = document.getElementById('reset-filters');
     const statTotal = document.getElementById('stat-total');
-    const statMinPrice = document.getElementById('stat-min-price');
 
     // Default search date to 30 days ahead
     const futureDate = new Date();
@@ -107,17 +106,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (sortVal === 'price_asc') return (a.price || 0) - (b.price || 0);
             if (sortVal === 'price_desc') return (b.price || 0) - (a.price || 0);
             if (sortVal === 'duration_asc') return (a.duration || 0) - (b.duration || 0);
-            if (sortVal === 'duration_desc') return (b.duration || 0) - (a.duration || 0);
             if (sortVal === 'departure_asc') return (a.departure_time || '').localeCompare(b.departure_time || '');
-            if (sortVal === 'departure_desc') return (b.departure_time || '').localeCompare(a.departure_time || '');
             return 0;
         });
 
-        // Update stats
-        if (statTotal) statTotal.textContent = filtered.length;
-        if (statMinPrice) {
-            const minP = filtered.reduce((min, f) => (f.price && f.price < min ? f.price : min), Infinity);
-            statMinPrice.textContent = minP !== Infinity ? formatPrice(minP) : '-';
+        if (statTotal) {
+            statTotal.textContent = `${filtered.length} flight${filtered.length === 1 ? '' : 's'}`;
         }
 
         renderResults(filtered);
@@ -131,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
         spinner.classList.remove('hidden');
         resultsContainer.innerHTML = '';
         resultsContainer.classList.add('hidden');
-        filterPanel.classList.add('hidden');
+        if (filterBar) filterBar.classList.add('hidden');
 
         const requestData = {
             from_airport: fromInput.value.trim().toUpperCase(),
@@ -165,9 +159,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 currency = data.currency || 'INR';
 
                 if (allFlights.length > 0) {
-                    filterPanel.classList.remove('hidden');
+                    if (filterBar) filterBar.classList.remove('hidden');
 
-                    // Calculate max dynamic ranges
                     const prices = allFlights.map(f => f.price).filter(Boolean);
                     if (prices.length > 0) {
                         const highestPrice = Math.max(...prices);
@@ -175,7 +168,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         maxPriceInput.value = maxPriceInput.max;
                     }
 
-                    // Populate airline options
                     const airlines = new Set();
                     allFlights.forEach(f => (f.airlines || []).forEach(a => airlines.add(a)));
                     const sortedAirlines = Array.from(airlines).sort();
@@ -204,7 +196,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Helper for airline icons / emojis
     function getAirlineIcon(name) {
         const lower = (name || '').toLowerCase();
         if (lower.includes('indigo')) return '🔵';
@@ -222,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="message-card">
                     <div class="message-icon">🔍</div>
                     <div class="message-title">No matching flights found</div>
-                    <div class="message-desc">Try widening your price or duration filters, or search for different dates.</div>
+                    <div class="message-desc">Try loosening your filters or picking a different date.</div>
                 </div>
             `;
             resultsContainer.classList.remove('hidden');
@@ -231,14 +222,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const cheapestPrice = Math.min(...flights.map(f => f.price).filter(Boolean));
 
-        let html = `
-            <div class="results-header-info">
-                <span class="results-count">Showing <strong>${flights.length}</strong> available flights</span>
-            </div>
-            <div class="flight-cards-list">
-        `;
+        let html = '<div class="flight-cards-list">';
 
-        flights.forEach((flight, index) => {
+        flights.forEach((flight) => {
             const durationHours = Math.floor((flight.duration || 0) / 60);
             const durationMins = (flight.duration || 0) % 60;
             const durationStr = `${durationHours}h ${durationMins}m`;
@@ -246,53 +232,51 @@ document.addEventListener('DOMContentLoaded', () => {
             const isBestDeal = flight.price && flight.price === cheapestPrice;
             const primaryAirline = (flight.airlines && flight.airlines[0]) || 'Airline';
             const icon = getAirlineIcon(primaryAirline);
-            const nextDayBadge = flight.next_day ? '<span style="font-size:0.7rem; color:#dc2626; font-weight:700; margin-left:4px;">+1 day</span>' : '';
+            const nextDayBadge = flight.next_day ? '<span style="color:#ef4444; font-size:0.65rem; font-weight:700;">+1d</span>' : '';
 
             html += `
-                <article class="flight-card" style="animation-delay: ${Math.min(index * 0.03, 0.4)}s">
-                    <!-- Airline Column -->
-                    <div class="airline-col">
-                        <div class="airline-avatar">${icon}</div>
-                        <div class="airline-details">
-                            <span class="airline-name">${flight.airlines.join(', ')}</span>
-                            <span class="flight-code">${flight.flight_number || 'Non-stop Flight'}</span>
-                            <span class="equipment-badge">${flight.equipment || 'Standard Jet'}</span>
+                <div class="compact-ticket">
+                    <!-- Airline Info -->
+                    <div class="ticket-airline">
+                        <div class="airline-badge">${icon}</div>
+                        <div class="airline-info">
+                            <span class="airline-name-text">${flight.airlines.join(', ')}</span>
+                            <span class="flight-number-text">${flight.flight_number || 'Non-stop'} · ${flight.equipment || 'Jet'}</span>
                         </div>
                     </div>
 
-                    <!-- Route / Timeline Column -->
-                    <div class="route-col">
-                        <div class="route-endpoint">
-                            <span class="endpoint-time">${flight.departure_time}</span>
-                            <span class="endpoint-airport">${flight.from_code || fromInput.value.toUpperCase()}</span>
+                    <!-- Route Timeline -->
+                    <div class="ticket-route">
+                        <div class="time-point">
+                            <span class="flight-time">${flight.departure_time}</span>
+                            <span class="airport-code">${flight.from_code || fromInput.value.toUpperCase()}</span>
                         </div>
 
-                        <div class="route-mid">
-                            <span class="route-duration">${durationStr}</span>
-                            <div class="route-visual">
-                                <div class="route-line"></div>
-                                <div class="route-plane">✈</div>
+                        <div class="flight-path">
+                            <span class="flight-duration">${durationStr}</span>
+                            <div class="path-line">
+                                <span class="path-plane">✈</span>
                             </div>
-                            <span class="route-stops-tag non-stop">Non-stop</span>
+                            <span class="stop-tag">Direct</span>
                         </div>
 
-                        <div class="route-endpoint" style="text-align: right;">
-                            <span class="endpoint-time">${flight.arrival_time}${nextDayBadge}</span>
-                            <span class="endpoint-airport">${flight.to_code || toInput.value.toUpperCase()}</span>
+                        <div class="time-point">
+                            <span class="flight-time">${flight.arrival_time} ${nextDayBadge}</span>
+                            <span class="airport-code">${flight.to_code || toInput.value.toUpperCase()}</span>
                         </div>
                     </div>
 
-                    <!-- Fare / Pricing Column -->
-                    <div class="fare-col">
-                        ${isBestDeal ? '<span class="deal-tag">✨ Best Value</span>' : ''}
-                        <span class="fare-amount">${priceStr}</span>
-                        <span class="fare-type">per passenger</span>
+                    <!-- Fare / Price -->
+                    <div class="ticket-price">
+                        ${isBestDeal ? '<span class="best-pill">Cheapest</span>' : ''}
+                        <span class="price-text">${priceStr}</span>
+                        <span class="price-sub">per person</span>
                     </div>
-                </article>
+                </div>
             `;
         });
 
-        html += `</div>`;
+        html += '</div>';
         resultsContainer.innerHTML = html;
         resultsContainer.classList.remove('hidden');
     }
@@ -301,8 +285,8 @@ document.addEventListener('DOMContentLoaded', () => {
         resultsContainer.innerHTML = `
             <div class="message-card" style="border-color: #fca5a5; background: #fff5f5;">
                 <div class="message-icon">⚠️</div>
-                <div class="message-title" style="color: #b91c1c;">Unable to complete search</div>
-                <div class="message-desc" style="color: #7f1d1d; white-space: pre-wrap; font-family: var(--font-mono); font-size: 0.8rem; background: #fee2e2; padding: 12px; border-radius: 8px; width: 100%; text-align: left;">${message}</div>
+                <div class="message-title" style="color: #b91c1c;">Error Fetching Flights</div>
+                <div class="message-desc" style="color: #7f1d1d; white-space: pre-wrap; font-family: var(--font-mono); font-size: 0.78rem;">${message}</div>
             </div>
         `;
         resultsContainer.classList.remove('hidden');
