@@ -20,8 +20,10 @@ app = FastAPI()
 # Pin the currency so the amounts Google returns always match the symbol shown in the UI.
 CURRENCY = "INR"
 
-# Mount the static directory
-app.mount("/static", StaticFiles(directory="static"), name="static")
+# Mount the static directory only if it exists locally (on Vercel, @vercel/static handles static files)
+STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
+if os.path.isdir(STATIC_DIR):
+    app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 class SearchRequest(BaseModel):
     from_airport: str
@@ -32,7 +34,10 @@ class SearchRequest(BaseModel):
 
 @app.get("/")
 def read_root():
-    return FileResponse("static/index.html")
+    index_file = os.path.join(STATIC_DIR, "index.html")
+    if os.path.isfile(index_file):
+        return FileResponse(index_file)
+    return {"message": "SkySearch API is running."}
 
 @app.get("/api/health")
 def health_check():
