@@ -104,6 +104,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify(requestData)
             });
 
+            if (!response.ok) {
+                // Server returned a non-2xx status
+                let detail = `HTTP ${response.status}`;
+                try {
+                    const errBody = await response.text();
+                    detail += `: ${errBody.substring(0, 500)}`;
+                } catch (_) {}
+                showError(detail);
+                return;
+            }
+
             const data = await response.json();
 
             if (data.success) {
@@ -128,10 +139,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 updateFilterLabels();
                 applyFilters();
             } else {
-                showError(data.error || 'Failed to fetch flights.');
+                let msg = data.error || 'Failed to fetch flights.';
+                if (data.hint) msg += `\n\n💡 Hint: ${data.hint}`;
+                if (data.error_type) msg += `\n[${data.error_type}]`;
+                showError(msg);
             }
         } catch (error) {
-            showError('A network error occurred.');
+            showError(`Network error: ${error.message || error}`);
         } finally {
             btnText.classList.remove('hidden');
             spinner.classList.add('hidden');
@@ -190,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function showError(message) {
-        resultsContainer.innerHTML = `<div class="message-card" style="color: #DC2626; border-color: #FCA5A5;">Error: ${message}</div>`;
+        resultsContainer.innerHTML = `<div class="message-card" style="color: #DC2626; border-color: #FCA5A5; white-space: pre-wrap;">Error: ${message}</div>`;
         resultsContainer.classList.remove('hidden');
     }
 });

@@ -1,9 +1,19 @@
 import os
+import sys
+import traceback
+import platform
 from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
-from fast_flights import FlightQuery, Passengers, create_query, get_flights
+
+# Attempt to import fast_flights; capture the error if it fails (e.g. primp on Vercel).
+_import_error: str | None = None
+try:
+    from fast_flights import FlightQuery, Passengers, create_query, get_flights
+except Exception as exc:
+    _import_error = f"{type(exc).__name__}: {exc}"
+    FlightQuery = Passengers = create_query = get_flights = None  # type: ignore
 
 app = FastAPI()
 
@@ -24,8 +34,28 @@ class SearchRequest(BaseModel):
 def read_root():
     return FileResponse("static/index.html")
 
+@app.get("/api/health")
+def health_check():
+    """Diagnostic endpoint – hit /api/health to see what's going on."""
+    return {
+        "status": "ok" if _import_error is None else "degraded",
+        "fast_flights_available": _import_error is None,
+        "import_error": _import_error,
+        "python_version": sys.version,
+        "platform": platform.platform(),
+    }
+
 @app.post("/api/search")
 def search_flights(req: SearchRequest):
+    # Fail fast if the library couldn't load.
+    if _import_error is not None:
+        return {
+            "success": False,
+            "error": f"fast_flights failed to import: {_import_error}",
+            "hint": "The primp library requires a full Linux environment. "
+                    "Vercel serverless does not support it — deploy on Railway, Render, or Fly.io instead.",
+        }
+
     try:
         query = create_query(
             flights=[
@@ -65,7 +95,13 @@ def search_flights(req: SearchRequest):
             
         return {"success": True, "currency": CURRENCY, "flights": results}
     except Exception as e:
-        return {"success": False, "error": str(e)}
+        tb = traceback.format_exc()
+        return {
+            "success": False,
+            "error": str(e),
+            "error_type": type(e).__name__,
+            "traceback": tb,
+        }
 
 if __name__ == "__main__":
     import uvicorn
