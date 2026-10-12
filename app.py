@@ -8,7 +8,7 @@ from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
 # Attempt to import fast_flights; capture the error if it fails (e.g. primp on Vercel).
-_import_error: str | None = None
+_import_error = None
 try:
     from fast_flights import FlightQuery, Passengers, create_query, get_flights
 except Exception as exc:
