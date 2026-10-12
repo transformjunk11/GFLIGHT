@@ -5,7 +5,7 @@
     --primary: #2563eb;
     --primary-hover: #1d4ed8;
     --primary-light: #eff6ff;
-    --accent-green: #10b981;
+    --accent-green: #059669;
     --accent-green-bg: #ecfdf5;
     --text-main: #0f172a;
     --text-sec: #475569;
@@ -17,7 +17,7 @@
     --radius-lg: 14px;
     --radius-pill: 9999px;
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.06);
     --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
     --transition: all 0.15s ease-in-out;
@@ -34,7 +34,7 @@ body {
     font-family: var(--font-sans);
     background-color: var(--bg-page);
     color: var(--text-main);
-    line-height: 1.4;
+    line-height: 1.35;
     -webkit-font-smoothing: antialiased;
     min-height: 100vh;
 }
@@ -46,11 +46,11 @@ body {
     position: sticky;
     top: 0;
     z-index: 50;
-    padding: 8px 16px;
+    padding: 6px 14px;
 }
 
 .nav-content {
-    max-width: 1000px;
+    max-width: 900px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
@@ -62,13 +62,13 @@ body {
     align-items: center;
     gap: 6px;
     font-weight: 800;
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     color: var(--primary);
     letter-spacing: -0.02em;
 }
 
 .logo-icon {
-    font-size: 1.15rem;
+    font-size: 1.1rem;
     display: inline-block;
     transform: rotate(45deg);
 }
@@ -78,46 +78,46 @@ body {
 }
 
 .currency-badge {
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     font-weight: 700;
     color: var(--text-sec);
     background: #f8fafc;
     border: 1px solid var(--border);
-    padding: 3px 8px;
+    padding: 2px 7px;
     border-radius: var(--radius-pill);
 }
 
-/* Main Container */
+/* Main Container — Tightened Max-Width to eliminate vacant margins */
 .main-container {
-    max-width: 1000px;
+    max-width: 860px;
     margin: 0 auto;
-    padding: 12px 16px;
+    padding: 10px 12px;
 }
 
 /* Compact Search Box */
 .compact-search-card {
     background: var(--surface);
-    border-radius: var(--radius-lg);
-    padding: 12px 14px;
+    border-radius: var(--radius-md);
+    padding: 10px 12px;
     border: 1px solid var(--border);
     box-shadow: var(--shadow-sm);
-    margin-bottom: 12px;
+    margin-bottom: 8px;
 }
 
 .route-input-row {
     display: flex;
-    gap: 8px;
+    gap: 6px;
     align-items: center;
     flex-wrap: nowrap;
 }
 
 .airport-input-box {
-    flex: 1.2;
-    min-width: 70px;
+    flex: 1.1;
+    min-width: 65px;
     background: #f8fafc;
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
-    padding: 4px 8px;
+    padding: 3px 6px;
     display: flex;
     flex-direction: column;
     transition: var(--transition);
@@ -131,10 +131,10 @@ body {
 
 .airport-input-box label,
 .detail-input-box label {
-    font-size: 0.62rem;
+    font-size: 0.6rem;
     font-weight: 800;
     color: var(--text-muted);
-    letter-spacing: 0.05em;
+    letter-spacing: 0.04em;
     margin-bottom: 1px;
 }
 
@@ -143,7 +143,7 @@ body {
     outline: none;
     background: transparent;
     font-family: var(--font-mono);
-    font-size: 1.15rem;
+    font-size: 1.1rem;
     font-weight: 800;
     color: var(--text-main);
     text-transform: uppercase;
@@ -152,13 +152,13 @@ body {
 }
 
 .compact-swap-btn {
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
     border: 1px solid var(--border);
     background: var(--surface);
     color: var(--text-sec);
-    font-size: 1rem;
+    font-size: 0.95rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -177,7 +177,7 @@ body {
     background: #f8fafc;
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
-    padding: 4px 8px;
+    padding: 3px 6px;
     display: flex;
     flex-direction: column;
     transition: var(--transition);
@@ -190,18 +190,18 @@ body {
 }
 
 .date-box {
-    flex: 1.4;
-    min-width: 120px;
+    flex: 1.3;
+    min-width: 110px;
 }
 
 .mini-box {
-    flex: 0.7;
-    min-width: 50px;
+    flex: 0.6;
+    min-width: 45px;
 }
 
 .class-box {
-    flex: 1.1;
-    min-width: 90px;
+    flex: 1;
+    min-width: 85px;
 }
 
 .detail-input-box input,
@@ -210,7 +210,7 @@ body {
     outline: none;
     background: transparent;
     font-family: var(--font-sans);
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     font-weight: 700;
     color: var(--text-main);
     width: 100%;
@@ -224,10 +224,10 @@ body {
     border: none;
     border-radius: var(--radius-sm);
     font-family: var(--font-sans);
-    font-size: 0.88rem;
+    font-size: 0.85rem;
     font-weight: 700;
-    padding: 0 18px;
-    height: 44px;
+    padding: 0 16px;
+    height: 38px;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -244,8 +244,8 @@ body {
 .chips-scroll {
     display: flex;
     align-items: center;
-    gap: 6px;
-    margin-top: 8px;
+    gap: 5px;
+    margin-top: 6px;
     overflow-x: auto;
     padding-bottom: 2px;
     scrollbar-width: none;
@@ -256,7 +256,7 @@ body {
 }
 
 .chips-label {
-    font-size: 0.68rem;
+    font-size: 0.65rem;
     font-weight: 700;
     color: var(--text-muted);
     text-transform: uppercase;
@@ -268,9 +268,9 @@ body {
     border: 1px solid var(--border);
     color: var(--text-sec);
     font-family: var(--font-mono);
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     font-weight: 600;
-    padding: 3px 8px;
+    padding: 2px 7px;
     border-radius: var(--radius-pill);
     cursor: pointer;
     white-space: nowrap;
@@ -287,16 +287,16 @@ body {
 /* Compact Filter Bar */
 .compact-filter-bar {
     background: var(--surface);
-    border-radius: var(--radius-md);
-    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    padding: 6px 10px;
     border: 1px solid var(--border);
-    margin-bottom: 12px;
+    margin-bottom: 8px;
     box-shadow: var(--shadow-sm);
 }
 
 .filter-controls-row {
     display: flex;
-    gap: 12px;
+    gap: 10px;
     align-items: center;
     flex-wrap: wrap;
 }
@@ -304,11 +304,11 @@ body {
 .filter-item {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
 }
 
 .filter-item label {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: 700;
     color: var(--text-sec);
     white-space: nowrap;
@@ -317,8 +317,8 @@ body {
 .mini-select {
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
-    padding: 3px 8px;
-    font-size: 0.78rem;
+    padding: 2px 6px;
+    font-size: 0.75rem;
     font-family: var(--font-sans);
     font-weight: 600;
     color: var(--text-main);
@@ -328,7 +328,7 @@ body {
 
 .range-item {
     flex: 1;
-    min-width: 140px;
+    min-width: 120px;
 }
 
 .range-item input[type="range"] {
@@ -341,7 +341,7 @@ body {
 .filter-actions {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     margin-left: auto;
 }
 
@@ -349,7 +349,7 @@ body {
     background: none;
     border: none;
     color: var(--primary);
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: 700;
     cursor: pointer;
 }
@@ -357,15 +357,15 @@ body {
 .badge-count {
     background: #f1f5f9;
     border: 1px solid var(--border);
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     font-weight: 700;
     color: var(--text-sec);
-    padding: 2px 7px;
+    padding: 2px 6px;
     border-radius: var(--radius-pill);
     white-space: nowrap;
 }
 
-/* Flight Results — Ultra-Clean Compact Cards */
+/* Flight Results Container */
 .results-area {
     width: 100%;
 }
@@ -373,17 +373,18 @@ body {
 .flight-cards-list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
 }
 
+/* Compact Flight Row Ticket */
 .compact-ticket {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius-md);
-    padding: 10px 14px;
-    display: flex;
+    padding: 8px 12px;
+    display: grid;
+    grid-template-columns: 140px 1fr 110px;
     align-items: center;
-    justify-content: space-between;
     gap: 12px;
     transition: var(--transition);
     box-shadow: var(--shadow-sm);
@@ -395,70 +396,78 @@ body {
     background: var(--surface-hover);
 }
 
-/* Left: Airline Branding */
+/* Column 1: Airline */
 .ticket-airline {
     display: flex;
     align-items: center;
     gap: 8px;
-    min-width: 140px;
+    min-width: 0;
 }
 
 .airline-badge {
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     background: #f1f5f9;
     border: 1px solid var(--border);
-    border-radius: 8px;
+    border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.1rem;
+    font-size: 0.95rem;
     flex-shrink: 0;
 }
 
 .airline-info {
     display: flex;
     flex-direction: column;
+    min-width: 0;
 }
 
 .airline-name-text {
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     font-weight: 700;
     color: var(--text-main);
-    line-height: 1.2;
+    line-height: 1.15;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .flight-number-text {
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     color: var(--text-muted);
     font-family: var(--font-mono);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-/* Center: Route Timeline */
+/* Column 2: Flight Route Timeline */
 .ticket-route {
     display: flex;
     align-items: center;
-    gap: 12px;
-    flex: 1;
+    gap: 8px;
     justify-content: center;
-    max-width: 360px;
+    min-width: 0;
 }
 
 .time-point {
     display: flex;
     flex-direction: column;
     align-items: center;
+    flex-shrink: 0;
 }
 
 .flight-time {
-    font-size: 1.05rem;
+    font-size: 1rem;
     font-weight: 800;
     font-family: var(--font-mono);
     color: var(--text-main);
+    line-height: 1.1;
 }
 
 .airport-code {
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     font-weight: 700;
     color: var(--text-sec);
 }
@@ -468,22 +477,24 @@ body {
     flex-direction: column;
     align-items: center;
     flex: 1;
-    min-width: 80px;
+    max-width: 140px;
+    min-width: 50px;
 }
 
 .flight-duration {
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     font-weight: 600;
     color: var(--text-muted);
+    line-height: 1;
     margin-bottom: 2px;
 }
 
 .path-line {
     width: 100%;
-    height: 2px;
+    height: 1.5px;
     background: #cbd5e1;
     position: relative;
-    border-radius: 2px;
+    border-radius: 1px;
 }
 
 .path-plane {
@@ -491,47 +502,50 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     color: var(--primary);
     background: var(--surface);
     padding: 0 2px;
 }
 
 .stop-tag {
-    font-size: 0.65rem;
+    font-size: 0.62rem;
     font-weight: 700;
     color: var(--accent-green);
+    line-height: 1;
     margin-top: 2px;
 }
 
-/* Right: Fare / Price */
+/* Column 3: Price */
 .ticket-price {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    min-width: 110px;
+    justify-content: center;
+    flex-shrink: 0;
 }
 
 .best-pill {
     background: var(--accent-green-bg);
     color: var(--accent-green);
-    font-size: 0.65rem;
+    font-size: 0.6rem;
     font-weight: 800;
-    padding: 1px 6px;
+    padding: 1px 5px;
     border-radius: var(--radius-pill);
-    margin-bottom: 2px;
+    margin-bottom: 1px;
+    text-transform: uppercase;
 }
 
 .price-text {
-    font-size: 1.25rem;
+    font-size: 1.15rem;
     font-weight: 800;
     font-family: var(--font-mono);
     color: var(--text-main);
-    line-height: 1.2;
+    line-height: 1.1;
 }
 
 .price-sub {
-    font-size: 0.65rem;
+    font-size: 0.62rem;
     color: var(--text-muted);
     font-weight: 600;
 }
@@ -557,49 +571,49 @@ body {
 /* Empty / Error Card */
 .message-card {
     background: var(--surface);
-    padding: 30px 16px;
+    padding: 24px 16px;
     text-align: center;
     border-radius: var(--radius-md);
     border: 1px solid var(--border);
-    margin-top: 8px;
+    margin-top: 6px;
 }
 
 .message-icon {
-    font-size: 1.8rem;
-    margin-bottom: 4px;
+    font-size: 1.6rem;
+    margin-bottom: 2px;
 }
 
 .message-title {
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 700;
     color: var(--text-main);
 }
 
 .message-desc {
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     color: var(--text-sec);
-    margin-top: 4px;
+    margin-top: 2px;
 }
 
 /* ==============================================================
-   MOBILE RESPONSIVE BREAKPOINT (Screen width <= 680px)
+   MOBILE RESPONSIVENESS (Screen width <= 640px)
    ============================================================== */
-@media (max-width: 680px) {
+@media (max-width: 640px) {
     .main-container {
-        padding: 8px;
+        padding: 6px 8px;
     }
 
     .compact-search-card {
-        padding: 10px;
+        padding: 8px 10px;
     }
 
     .route-input-row {
         flex-wrap: wrap;
-        gap: 6px;
+        gap: 5px;
     }
 
     .airport-input-box {
-        flex: 1 1 40%;
+        flex: 1 1 38%;
     }
 
     .compact-swap-btn {
@@ -609,7 +623,7 @@ body {
     }
 
     .date-box {
-        flex: 1 1 50%;
+        flex: 1 1 48%;
     }
 
     .mini-box {
@@ -617,56 +631,43 @@ body {
     }
 
     .class-box {
-        flex: 1 1 35%;
+        flex: 1 1 32%;
     }
 
     .compact-search-btn {
         width: 100%;
-        height: 38px;
+        height: 36px;
         margin-top: 2px;
     }
 
-    .filter-controls-row {
-        gap: 8px;
-    }
-
-    .range-item {
-        flex: 1 1 100%;
-    }
-
-    /* Stack ticket info on small screens */
     .compact-ticket {
-        padding: 10px 12px;
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 8px;
+        grid-template-columns: 1fr auto;
+        grid-template-rows: auto auto;
+        padding: 8px 10px;
+        row-gap: 6px;
+        column-gap: 8px;
     }
 
     .ticket-airline {
-        flex: 1 1 auto;
-        min-width: unset;
+        grid-column: 1 / 2;
+        grid-row: 1 / 2;
     }
 
     .ticket-price {
-        flex: 0 0 auto;
-        min-width: unset;
-        text-align: right;
+        grid-column: 2 / 3;
+        grid-row: 1 / 2;
     }
 
     .ticket-route {
-        flex: 1 1 100%;
-        max-width: 100%;
+        grid-column: 1 / 3;
+        grid-row: 2 / 3;
         border-top: 1px dashed var(--border);
-        padding-top: 8px;
-        margin-top: 2px;
+        padding-top: 6px;
         justify-content: space-between;
+        max-width: 100%;
     }
 
-    .flight-time {
-        font-size: 0.95rem;
-    }
-
-    .price-text {
-        font-size: 1.15rem;
+    .flight-path {
+        max-width: 100px;
     }
 }
