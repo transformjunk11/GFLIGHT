@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const fromInput = document.getElementById('from_airport');
     const toInput = document.getElementById('to_airport');
     const dateInput = document.getElementById('date');
+    const stopsSelect = document.getElementById('stops');
     const adultsInput = document.getElementById('adults');
     const seatInput = document.getElementById('seat');
     const swapBtn = document.getElementById('swap-airports');
@@ -10,11 +11,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const spinner = document.querySelector('.spinner');
     const resultsContainer = document.getElementById('results-container');
     const filterBar = document.getElementById('filter-bar');
-    const maxPriceInput = document.getElementById('max-price');
+    const filterStops = document.getElementById('filter-stops');
     const maxDurationInput = document.getElementById('max-duration');
     const filterAirline = document.getElementById('filter-airline');
     const sortBy = document.getElementById('sort-by');
-    const priceVal = document.getElementById('price-val');
     const durationVal = document.getElementById('duration-val');
     const resetFiltersBtn = document.getElementById('reset-filters');
     const statTotal = document.getElementById('stat-total');
@@ -55,9 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateFilterLabels() {
-        const p = maxPriceInput.value;
-        priceVal.textContent = p == maxPriceInput.max ? 'Any' : formatPrice(Number(p));
-
         const d = maxDurationInput.value;
         if (d == maxDurationInput.max) {
             durationVal.textContent = 'Any';
@@ -69,10 +66,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function resetFilters() {
-        maxPriceInput.value = maxPriceInput.max;
         maxDurationInput.value = maxDurationInput.max;
-        filterAirline.value = 'any';
-        sortBy.value = 'price_asc';
+        if (filterStops) filterStops.value = 'all';
+        if (filterAirline) filterAirline.value = 'any';
+        if (sortBy) sortBy.value = 'departure_asc';
         updateFilterLabels();
         applyFilters();
     }
@@ -81,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
         resetFiltersBtn.addEventListener('click', resetFilters);
     }
 
-    [maxPriceInput, maxDurationInput, filterAirline, sortBy].forEach(el => {
+    [maxDurationInput, filterStops, filterAirline, sortBy].filter(Boolean).forEach(el => {
         el.addEventListener('input', () => {
             updateFilterLabels();
             applyFilters();
@@ -89,24 +86,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function applyFilters() {
-        const maxP = parseInt(maxPriceInput.value);
         const maxD = parseInt(maxDurationInput.value);
-        const airlineVal = filterAirline.value;
-        const sortVal = sortBy.value;
+        const stopsVal = filterStops ? filterStops.value : 'all';
+        const airlineVal = filterAirline ? filterAirline.value : 'any';
+        const sortVal = sortBy ? sortBy.value : 'departure_asc';
 
         let filtered = allFlights.filter(f => {
-            if (maxP < parseInt(maxPriceInput.max) && f.price && f.price > maxP) return false;
             if (maxD < parseInt(maxDurationInput.max) && f.duration && f.duration > maxD) return false;
             if (airlineVal !== 'any' && !f.airlines.includes(airlineVal)) return false;
+            if (stopsVal === 'nonstop' && f.stops !== 0) return false;
+            if (stopsVal === 'connecting' && f.stops === 0) return false;
             return true;
         });
 
         // Sorting
         filtered.sort((a, b) => {
+            if (sortVal === 'departure_asc') return (a.departure_time || '').localeCompare(b.departure_time || '');
             if (sortVal === 'price_asc') return (a.price || 0) - (b.price || 0);
             if (sortVal === 'price_desc') return (b.price || 0) - (a.price || 0);
             if (sortVal === 'duration_asc') return (a.duration || 0) - (b.duration || 0);
-            if (sortVal === 'departure_asc') return (a.departure_time || '').localeCompare(b.departure_time || '');
             return 0;
         });
 
@@ -127,12 +125,16 @@ document.addEventListener('DOMContentLoaded', () => {
         resultsContainer.classList.add('hidden');
         if (filterBar) filterBar.classList.add('hidden');
 
+        const stopsVal = stopsSelect.value;
+        const maxStopsParam = stopsVal === 'any' ? null : parseInt(stopsVal);
+
         const requestData = {
             from_airport: fromInput.value.trim().toUpperCase(),
             to_airport: toInput.value.trim().toUpperCase(),
             date: dateInput.value,
             adults: parseInt(adultsInput.value),
-            seat: seatInput.value
+            seat: seatInput.value,
+            max_stops: maxStopsParam
         };
 
         try {
@@ -161,18 +163,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (allFlights.length > 0) {
                     if (filterBar) filterBar.classList.remove('hidden');
 
-                    const prices = allFlights.map(f => f.price).filter(Boolean);
-                    if (prices.length > 0) {
-                        const highestPrice = Math.max(...prices);
-                        maxPriceInput.max = Math.ceil(highestPrice / 1000) * 1000;
-                        maxPriceInput.value = maxPriceInput.max;
+                    const durations = allFlights.map(f => f.duration).filter(Boolean);
+                    if (durations.length > 0) {
+                        const maxD = Math.max(...durations);
+                        maxDurationInput.max = Math.ceil(maxD / 60) * 60;
+                        maxDurationInput.value = maxDurationInput.max;
                     }
 
                     const airlines = new Set();
                     allFlights.forEach(f => (f.airlines || []).forEach(a => airlines.add(a)));
                     const sortedAirlines = Array.from(airlines).sort();
 
-                    filterAirline.innerHTML = '<option value="any">All Airlines</option>';
+                    filterAirline.innerHTML = '<option value="any">All Carriers</option>';
                     sortedAirlines.forEach(a => {
                         const opt = document.createElement('option');
                         opt.value = a;
@@ -201,15 +203,16 @@ document.addEventListener('DOMContentLoaded', () => {
             resultsContainer.innerHTML = `
                 <div class="message-card">
                     <div class="message-icon">🔍</div>
-                    <div class="message-title">No matching flights found</div>
-                    <div class="message-desc">Try loosening your filters or picking a different date.</div>
+                    <div class="message-title">No matching staff itineraries found</div>
+                    <div class="message-desc">Try selecting "Any Stops" or choosing a different travel date.</div>
                 </div>
             `;
             resultsContainer.classList.remove('hidden');
             return;
         }
 
-        const cheapestPrice = Math.min(...flights.map(f => f.price).filter(Boolean));
+        const validPrices = flights.map(f => f.price).filter(Boolean);
+        const cheapestPrice = validPrices.length > 0 ? Math.min(...validPrices) : null;
 
         let html = '<div class="flight-cards-list">';
 
@@ -217,9 +220,20 @@ document.addEventListener('DOMContentLoaded', () => {
             const durationHours = Math.floor((flight.duration || 0) / 60);
             const durationMins = (flight.duration || 0) % 60;
             const durationStr = `${durationHours}h ${durationMins}m`;
-            const priceStr = formatPrice(flight.price);
-            const isBestDeal = flight.price && flight.price === cheapestPrice;
+            const priceStr = flight.price ? formatPrice(flight.price) : 'Fare N/A';
+            const isBestDeal = cheapestPrice && flight.price === cheapestPrice;
             const nextDayBadge = flight.next_day ? '<span style="color:#ef4444; font-size:0.65rem; font-weight:700;">+1d</span>' : '';
+
+            // Stops label
+            let stopHtml = '';
+            if (flight.stops === 0) {
+                stopHtml = '<span class="stop-tag direct">Direct</span>';
+            } else {
+                const layoverList = (flight.layover_codes && flight.layover_codes.length > 0)
+                    ? `via ${flight.layover_codes.join(', ')}`
+                    : `${flight.stops} stop${flight.stops > 1 ? 's' : ''}`;
+                stopHtml = `<span class="stop-tag connecting">${layoverList}</span>`;
+            }
 
             html += `
                 <div class="compact-ticket">
@@ -227,7 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="ticket-airline">
                         <div class="airline-info">
                             <span class="airline-name-text">${flight.airlines.join(', ')}</span>
-                            <span class="flight-number-text">${flight.flight_number || 'Non-stop'} · ${flight.equipment || 'Jet'}</span>
+                            <span class="flight-number-text">${flight.flight_number || 'Multiple Legs'} · ${flight.equipment || 'Jet'}</span>
                         </div>
                     </div>
 
@@ -243,7 +257,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <div class="path-line">
                                 <span class="path-plane">✈</span>
                             </div>
-                            <span class="stop-tag">Direct</span>
+                            ${stopHtml}
                         </div>
 
                         <div class="time-point">
@@ -254,9 +268,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     <!-- Fare / Price -->
                     <div class="ticket-price">
-                        ${isBestDeal ? '<span class="best-pill">Cheapest</span>' : ''}
+                        ${isBestDeal ? '<span class="best-pill">Lowest</span>' : ''}
                         <span class="price-text">${priceStr}</span>
-                        <span class="price-sub">per person</span>
+                        <span class="price-sub">per seat</span>
                     </div>
                 </div>
             `;
@@ -271,7 +285,7 @@ document.addEventListener('DOMContentLoaded', () => {
         resultsContainer.innerHTML = `
             <div class="message-card" style="border-color: #fca5a5; background: #fff5f5;">
                 <div class="message-icon">⚠️</div>
-                <div class="message-title" style="color: #b91c1c;">Error Fetching Flights</div>
+                <div class="message-title" style="color: #b91c1c;">Error Fetching Itineraries</div>
                 <div class="message-desc" style="color: #7f1d1d; white-space: pre-wrap; font-family: var(--font-mono); font-size: 0.78rem;">${message}</div>
             </div>
         `;

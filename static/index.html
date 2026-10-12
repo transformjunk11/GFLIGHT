@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SkySearch — Real-Time Flight Search</title>
-    <meta name="description" content="Search, filter, and compare real-time Google Flight schedules and prices with SkySearch.">
+    <title>CrewFly — Staff Travel & Airline Crew Itinerary Finder</title>
+    <meta name="description" content="Dedicated airline crew & staff travel search engine with direct and connecting route explorer.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/style.css?v=6">
+    <link rel="stylesheet" href="/static/style.css?v=8">
 </head>
 <body>
     <header class="compact-header">
         <div class="nav-content">
             <div class="logo">
-                <span class="logo-icon">✈</span>
-                <span class="brand-title">SkySearch</span>
+                <span class="crew-badge">STAFF</span>
+                <span class="brand-title">CrewFly</span>
+                <span class="sub-badge">Standby & Commute</span>
             </div>
             <div class="header-right">
                 <span class="currency-badge">INR (₹)</span>
@@ -41,8 +42,18 @@
                     </div>
 
                     <div class="detail-input-box date-box">
-                        <label for="date">DEPART</label>
+                        <label for="date">DATE</label>
                         <input type="date" id="date" required>
+                    </div>
+
+                    <div class="detail-input-box stops-box">
+                        <label for="stops">ROUTING</label>
+                        <select id="stops">
+                            <option value="any">Any Stops</option>
+                            <option value="0">Direct Only</option>
+                            <option value="1">1 Stop Max</option>
+                            <option value="2">2 Stops Max</option>
+                        </select>
                     </div>
 
                     <div class="detail-input-box mini-box">
@@ -51,7 +62,7 @@
                     </div>
 
                     <div class="detail-input-box class-box">
-                        <label for="seat">CLASS</label>
+                        <label for="seat">CABIN</label>
                         <select id="seat">
                             <option value="economy">Economy</option>
                             <option value="business">Business</option>
@@ -60,51 +71,56 @@
                     </div>
 
                     <button type="submit" id="search-btn" class="compact-search-btn">
-                        <span class="btn-text">Search</span>
+                        <span class="btn-text">Find Flights</span>
                         <div class="spinner hidden"></div>
                     </button>
                 </div>
 
-                <!-- Horizontal Quick Route Pills -->
+                <!-- Quick Crew Commute Routes -->
                 <div class="chips-scroll">
-                    <span class="chips-label">Quick:</span>
+                    <span class="chips-label">Crew Hubs:</span>
                     <button type="button" class="chip" data-from="BOM" data-to="DEL">BOM-DEL</button>
                     <button type="button" class="chip" data-from="BLR" data-to="DEL">BLR-DEL</button>
                     <button type="button" class="chip" data-from="DEL" data-to="DXB">DEL-DXB</button>
+                    <button type="button" class="chip" data-from="BOM" data-to="LHR">BOM-LHR</button>
+                    <button type="button" class="chip" data-from="DEL" data-to="SIN">DEL-SIN</button>
                     <button type="button" class="chip" data-from="BOM" data-to="GOI">BOM-GOI</button>
-                    <button type="button" class="chip" data-from="CCU" data-to="DEL">CCU-DEL</button>
                 </div>
             </form>
         </section>
 
-        <!-- Compact Horizontal Filter Toolbar (Shows after search) -->
+        <!-- Compact Horizontal Filter Toolbar -->
         <section id="filter-bar" class="compact-filter-bar hidden">
             <div class="filter-controls-row">
                 <div class="filter-item">
                     <label for="sort-by">Sort</label>
                     <select id="sort-by" class="mini-select">
-                        <option value="price_asc">Price: Low to High</option>
-                        <option value="price_desc">Price: High to Low</option>
-                        <option value="duration_asc">Duration: Shortest</option>
                         <option value="departure_asc">Departure: Earliest</option>
+                        <option value="price_asc">Fare: Low to High</option>
+                        <option value="price_desc">Fare: High to Low</option>
+                        <option value="duration_asc">Duration: Shortest</option>
+                    </select>
+                </div>
+
+                <div class="filter-item">
+                    <label for="filter-stops">Stops</label>
+                    <select id="filter-stops" class="mini-select">
+                        <option value="all">All Itineraries</option>
+                        <option value="nonstop">Direct Only</option>
+                        <option value="connecting">Connecting Only</option>
                     </select>
                 </div>
 
                 <div class="filter-item">
                     <label for="filter-airline">Airline</label>
                     <select id="filter-airline" class="mini-select">
-                        <option value="any">All Airlines</option>
+                        <option value="any">All Carriers</option>
                     </select>
                 </div>
 
                 <div class="filter-item range-item">
-                    <label for="max-price">Max Price: <strong id="price-val">Any</strong></label>
-                    <input type="range" id="max-price" min="0" max="50000" step="500" value="50000">
-                </div>
-
-                <div class="filter-item range-item">
                     <label for="max-duration">Max Duration: <strong id="duration-val">Any</strong></label>
-                    <input type="range" id="max-duration" min="0" max="1440" step="30" value="1440">
+                    <input type="range" id="max-duration" min="0" max="1800" step="30" value="1800">
                 </div>
 
                 <div class="filter-actions">
@@ -120,6 +136,6 @@
         </section>
     </main>
 
-    <script src="/static/script.js?v=7"></script>
+    <script src="/static/script.js?v=9"></script>
 </body>
 </html>

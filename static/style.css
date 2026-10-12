@@ -2,16 +2,20 @@
     --bg-page: #f1f5f9;
     --surface: #ffffff;
     --surface-hover: #f8fafc;
-    --primary: #2563eb;
-    --primary-hover: #1d4ed8;
+    --primary: #1e3a8a;
+    --primary-hover: #1e40af;
     --primary-light: #eff6ff;
+    --accent-gold: #f59e0b;
+    --accent-gold-bg: #fef3c7;
     --accent-green: #059669;
     --accent-green-bg: #ecfdf5;
+    --accent-blue: #0284c7;
+    --accent-blue-bg: #e0f2fe;
     --text-main: #0f172a;
     --text-sec: #475569;
     --text-muted: #94a3b8;
     --border: #e2e8f0;
-    --border-focus: #3b82f6;
+    --border-focus: #2563eb;
     --radius-sm: 6px;
     --radius-md: 10px;
     --radius-lg: 14px;
@@ -39,7 +43,7 @@ body {
     min-height: 100vh;
 }
 
-/* Compact Header */
+/* Compact Staff Header */
 .compact-header {
     background: var(--surface);
     border-bottom: 1px solid var(--border);
@@ -60,21 +64,30 @@ body {
 .logo {
     display: flex;
     align-items: center;
-    gap: 6px;
-    font-weight: 800;
-    font-size: 1.05rem;
-    color: var(--primary);
-    letter-spacing: -0.02em;
+    gap: 7px;
 }
 
-.logo-icon {
-    font-size: 1.1rem;
-    display: inline-block;
-    transform: rotate(45deg);
+.crew-badge {
+    background: var(--primary);
+    color: #ffffff;
+    font-size: 0.65rem;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
 }
 
 .brand-title {
-    color: var(--text-main);
+    color: var(--primary);
+    font-weight: 800;
+    font-size: 1.05rem;
+    letter-spacing: -0.02em;
+}
+
+.sub-badge {
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: var(--text-muted);
 }
 
 .currency-badge {
@@ -87,14 +100,14 @@ body {
     border-radius: var(--radius-pill);
 }
 
-/* Main Container — Tightened Max-Width to eliminate vacant margins */
+/* Main Container */
 .main-container {
     max-width: 860px;
     margin: 0 auto;
     padding: 10px 12px;
 }
 
-/* Compact Search Box */
+/* Search Card */
 .compact-search-card {
     background: var(--surface);
     border-radius: var(--radius-md);
@@ -126,7 +139,7 @@ body {
 .airport-input-box:focus-within {
     border-color: var(--border-focus);
     background: var(--surface);
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
 }
 
 .airport-input-box label,
@@ -186,12 +199,17 @@ body {
 .detail-input-box:focus-within {
     border-color: var(--border-focus);
     background: var(--surface);
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
 }
 
 .date-box {
     flex: 1.3;
     min-width: 110px;
+}
+
+.stops-box {
+    flex: 1;
+    min-width: 90px;
 }
 
 .mini-box {
@@ -200,8 +218,8 @@ body {
 }
 
 .class-box {
-    flex: 1;
-    min-width: 85px;
+    flex: 0.9;
+    min-width: 80px;
 }
 
 .detail-input-box input,
@@ -281,10 +299,10 @@ body {
 .chip:hover {
     background: var(--primary-light);
     color: var(--primary);
-    border-color: rgba(37, 99, 235, 0.3);
+    border-color: rgba(30, 58, 138, 0.3);
 }
 
-/* Compact Filter Bar */
+/* Filter Bar */
 .compact-filter-bar {
     background: var(--surface);
     border-radius: var(--radius-sm);
@@ -391,7 +409,7 @@ body {
 }
 
 .compact-ticket:hover {
-    border-color: rgba(37, 99, 235, 0.4);
+    border-color: rgba(30, 58, 138, 0.4);
     box-shadow: var(--shadow-md);
     background: var(--surface-hover);
 }
@@ -463,8 +481,8 @@ body {
     flex-direction: column;
     align-items: center;
     flex: 1;
-    max-width: 140px;
-    min-width: 50px;
+    max-width: 150px;
+    min-width: 60px;
 }
 
 .flight-duration {
@@ -497,9 +515,20 @@ body {
 .stop-tag {
     font-size: 0.62rem;
     font-weight: 700;
-    color: var(--accent-green);
     line-height: 1;
     margin-top: 2px;
+}
+
+.stop-tag.direct {
+    color: var(--accent-green);
+}
+
+.stop-tag.connecting {
+    color: var(--accent-blue);
+    background: var(--accent-blue-bg);
+    padding: 1px 4px;
+    border-radius: 3px;
+    font-family: var(--font-mono);
 }
 
 /* Column 3: Price */
@@ -512,8 +541,8 @@ body {
 }
 
 .best-pill {
-    background: var(--accent-green-bg);
-    color: var(--accent-green);
+    background: var(--accent-gold-bg);
+    color: #b45309;
     font-size: 0.6rem;
     font-weight: 800;
     padding: 1px 5px;
@@ -612,8 +641,12 @@ body {
         flex: 1 1 48%;
     }
 
+    .stops-box {
+        flex: 1 1 35%;
+    }
+
     .mini-box {
-        flex: 1 1 20%;
+        flex: 1 1 18%;
     }
 
     .class-box {
@@ -654,6 +687,6 @@ body {
     }
 
     .flight-path {
-        max-width: 100px;
+        max-width: 110px;
     }
 }
